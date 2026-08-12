@@ -1,0 +1,5 @@
+bin/
+obj/
+*.txt
+appsettings.json
+.env

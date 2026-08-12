@@ -1,0 +1,137 @@
+
+<Window x:Class="PAAI.Views.DiffWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="PAAI — Fix Preview"
+        Width="700" Height="600"
+        WindowStartupLocation="CenterScreen"
+        Background="#1A1A2E"
+        WindowStyle="ToolWindow"
+        ResizeMode="CanResize">
+
+  <Grid Margin="0">
+    <Grid.RowDefinitions>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="*"/>
+      <RowDefinition Height="Auto"/>
+      <RowDefinition Height="Auto"/>
+    </Grid.RowDefinitions>
+
+    <!-- Header -->
+    <Border Grid.Row="0" Background="#12122A" Padding="16,12">
+      <StackPanel>
+        <TextBlock x:Name="FileNameText"
+                   Foreground="White" FontSize="15"
+                   FontWeight="SemiBold"/>
+        <TextBlock x:Name="ErrorText"
+                   Foreground="#F38BA8" FontSize="12"
+                   TextWrapping="Wrap" Margin="0,4,0,0"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Legend -->
+    <Border Grid.Row="1" Background="#1E1E3A" Padding="16,8">
+      <StackPanel Orientation="Horizontal" >
+        <Border Background="#2D1B1B" CornerRadius="4"
+                Padding="8,4" Margin="0,0,12,0">
+          <TextBlock Foreground="#F38BA8" FontSize="12">
+            — Hataya jayega (purana)
+          </TextBlock>
+        </Border>
+        <Border Background="#1B2D1B" CornerRadius="4"
+                Padding="8,4">
+          <TextBlock Foreground="#A6E3A1" FontSize="12">
+            + Aayega (naya)
+          </TextBlock>
+        </Border>
+      </StackPanel>
+    </Border>
+
+    <!-- Diff view -->
+    <ScrollViewer Grid.Row="2"
+                  VerticalScrollBarVisibility="Auto"
+                  HorizontalScrollBarVisibility="Auto"
+                  Background="#1E1E2E">
+      <ItemsControl x:Name="DiffList">
+        <ItemsControl.ItemTemplate>
+          <DataTemplate>
+            <Border x:Name="LineBorder" Padding="0,1">
+              <Grid>
+                <Grid.ColumnDefinitions>
+                  <ColumnDefinition Width="30"/>
+                  <ColumnDefinition Width="*"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock x:Name="PrefixText"
+                           Grid.Column="0"
+                           FontFamily="Consolas"
+                           FontSize="13"
+                           HorizontalAlignment="Center"
+                           VerticalAlignment="Center"/>
+                <TextBlock x:Name="ContentText"
+                           Grid.Column="1"
+                           Text="{Binding Content}"
+                           FontFamily="Consolas"
+                           FontSize="13"
+                           TextWrapping="NoWrap"
+                           Padding="4,2"/>
+              </Grid>
+            </Border>
+            <DataTemplate.Triggers>
+              <DataTrigger Binding="{Binding Type}" Value="Removed">
+                <Setter TargetName="LineBorder" Property="Background" Value="#2D1B1B"/>
+                <Setter TargetName="ContentText" Property="Foreground" Value="#F38BA8"/>
+                <Setter TargetName="PrefixText" Property="Text" Value="−"/>
+                <Setter TargetName="PrefixText" Property="Foreground" Value="#F38BA8"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Type}" Value="Added">
+                <Setter TargetName="LineBorder" Property="Background" Value="#1B2D1B"/>
+                <Setter TargetName="ContentText" Property="Foreground" Value="#A6E3A1"/>
+                <Setter TargetName="PrefixText" Property="Text" Value="+"/>
+                <Setter TargetName="PrefixText" Property="Foreground" Value="#A6E3A1"/>
+              </DataTrigger>
+              <DataTrigger Binding="{Binding Type}" Value="Unchanged">
+                <Setter TargetName="ContentText" Property="Foreground" Value="#6C7086"/>
+                <Setter TargetName="PrefixText" Property="Text" Value=" "/>
+              </DataTrigger>
+            </DataTemplate.Triggers>
+          </DataTemplate>
+        </ItemsControl.ItemTemplate>
+      </ItemsControl>
+    </ScrollViewer>
+
+    <!-- Summary -->
+    <Border Grid.Row="3" Background="#12122A" Padding="16,8">
+      <StackPanel Orientation="Horizontal">
+        <TextBlock x:Name="SummaryText"
+                   Foreground="#9F9D96" FontSize="12"/>
+      </StackPanel>
+    </Border>
+
+    <!-- Buttons -->
+    <Border Grid.Row="4" Background="#12122A"
+            Padding="16,12"
+            BorderBrush="#2D2D4E" BorderThickness="0,1,0,0">
+      <StackPanel Orientation="Horizontal"
+                  HorizontalAlignment="Right">
+        <Button Content="Ignore — theek nahi karna"
+                Margin="0,0,10,0"
+                Padding="16,10"
+                Background="#313244"
+                Foreground="#9F9D96"
+                BorderThickness="0"
+                Cursor="Hand"
+                Click="Ignore_Click"/>
+        <Button Content="Apply — file theek karo"
+                Padding="16,10"
+                Background="#1D9E75"
+                Foreground="White"
+                BorderThickness="0"
+                Cursor="Hand"
+                FontWeight="SemiBold"
+                Click="Apply_Click"/>
+      </StackPanel>
+    </Border>
+
+  </Grid>
+</Window>
